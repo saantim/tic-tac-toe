@@ -1,14 +1,13 @@
-import random
 
 class TicTacToeGame():
     def __init__(self):
         self.board = self._create_board()
         self.turn = 1
 
-    def current_turn(self):
+    def get_turn(self):
         return self.turn
 
-    def current_board(self):
+    def get_board(self):
         return self.board
 
     def _create_board(self):
