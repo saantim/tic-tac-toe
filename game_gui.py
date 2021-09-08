@@ -1,6 +1,5 @@
 import tkinter as tk
-from tkinter import Place, messagebox
-import game as g
+import game
 
 
 class TicTacToeGui(tk.Frame):
@@ -8,14 +7,12 @@ class TicTacToeGui(tk.Frame):
     def __init__(self, root, game):
         tk.Frame.__init__(self, root)
         self.parent = root
-        self.game = game[0]
-        self.turn = game[1]
-        self.config(width= 800, height= 600, bg="blue")
+        self.game = game
 
+        self.config(width= 800, height= 600, bg="blue")
         self.canvas = tk.Canvas(self, width= 750, height= 550, bg="green")
         self.canvas.pack()
-        
-        turn = tk.Label(text=f"Now is Player {self.turn} turn!")
+        turn = tk.Label(text=f"Now is Player {self.game.current_turn()}'s turn!")
         turn.pack()
 
     def draw_pieces(self):
@@ -24,12 +21,13 @@ class TicTacToeGui(tk.Frame):
         
         pass
 
-
+    def map_click(self):
+        pass
 
 
 def design_table(game):
     frame_1 = tk.Frame()
-    current_turn = tk.Label(text=f"Now is Player {game[1]} turn!")
+    current_turn = tk.Label(text=f"Now is Player {game[1]}'s turn!")
     current_turn.config(bg= "pink")
     
     current_turn.pack()
@@ -55,14 +53,14 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.title("Tic-Tac-Toe")
     
-    game = g.create_game()
+    tictactoe = game.TicTacToeGame()
 
-    gui = TicTacToeGui(root, game)
+    gui = TicTacToeGui(root, tictactoe)
     gui.pack(side= "top", fill= "both", expand="True")
 
 
     
-    root.resizable(0,0)
+    #root.resizable(0,0)
     root.mainloop()
 
 
