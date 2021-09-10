@@ -24,7 +24,7 @@ class TicTacToeGame():
                 if x == 0: return False 
         return True
 
-    def winner(self):
+    def get_winner(self):
         #If there is a winner return his Player's number, otherwise returns 0
         line = self.complete_line()
         if not line: return 0
@@ -32,7 +32,7 @@ class TicTacToeGame():
         return self.board[y][x]
 
     def is_over(self):
-        return self.full_board() or self.winner()
+        return self.full_board() or self.get_winner()
 
     def next_turn(self):
         if self.turn == 1: self.turn = 2

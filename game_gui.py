@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter.simpledialog import askstring
 import tic_tac_toe
 
 
@@ -9,24 +10,31 @@ class TicTacToeGui(tk.Frame):
         self.parent = root
         self.game = game
         self.cell_size = 150
+        self.current_turn = 0
+        self.label_text = tk.StringVar()
 
         self.config(width= 800, height= 600, bg="blue")
         self.canvas = tk.Canvas(self, width= 550, height= 550, bg="green")
         self.canvas.pack()
-        turn = tk.Label(text=f"Now is Player {self.game.get_turn()}'s turn!")
-        turn.pack()
-        self.canvas.bind("<Button-1>", self.click)
-        self.draw_cells()
 
-    def draw_cells(self):
+        label_turn = tk.Label(textvariable= self.label_text, font=("Purisa", 25))
+        label_turn.pack()
+
+        self.canvas.bind("<Button-1>", self.click)
+        self.draw_board()
+        self.show_turn()
+        
+    def draw_board(self):
         board = self.game.get_board()
         for l in range(len(board)):
             for c in range(len(board[0])):
-                self.draw_empty_cell(c, l)
+                self.draw_cell(c, l, "blue")
+                if self.game.get_winner() and (c, l) in self.game.complete_line():
+                    self.draw_cell(c, l, "red")
                 if board[l][c] == 1: self.draw_x(c, l)
                 if board[l][c] == 2: self.draw_o(c, l)
 
-    def draw_empty_cell(self, x_board, y_board):
+    def draw_cell(self, x_board, y_board, colour):
         x0 = y0 = 50
         x1 = y1 = 200
         self.canvas.create_rectangle(
@@ -34,7 +42,7 @@ class TicTacToeGui(tk.Frame):
             y0 + (y_board * self.cell_size),
             x1 + (x_board * self.cell_size),
             y1 + (y_board * self.cell_size),
-            fill="blue")
+            fill=colour)
 
     def draw_x(self, x_board, y_board):
         self.canvas.create_text(
@@ -51,7 +59,6 @@ class TicTacToeGui(tk.Frame):
     def click(self, event):
         x = event.x
         y = event.y
-        print(event.x, event.y)
 
         x0 = y0 = 50
         x1 = y1 = 200
@@ -66,9 +73,21 @@ class TicTacToeGui(tk.Frame):
                     self.game.make_mark(x_board, y_board)
         self.draw_refresh()
 
+    def show_turn(self):
+        self.label_text.set(value=f"Now is Player {self.game.get_turn()}'s turn!")
+
+    def show_winner(self):
+        if not self.game.get_winner():
+            self.label_text.set(value=f"It's a Draw!")    
+        else:
+            self.label_text.set(value=f"Player {self.game.get_turn()} wins!!!")
+
     def draw_refresh(self):
-        self.draw_cells()
-        #self.show_winner()
+        self.draw_board()
+        self.show_turn()
+        if self.game.is_over():
+            self.show_winner()
+
 
 if __name__ == "__main__":
     root = tk.Tk()
@@ -78,8 +97,7 @@ if __name__ == "__main__":
 
     gui = TicTacToeGui(root, tictactoe)
     gui.pack(side= "top", fill= "both", expand="True")
-
-    #root.resizable(0,0)
+    root.resizable(0,0)
     root.mainloop()
 
 
