@@ -57,6 +57,7 @@ class TicTacToeGui(tk.Frame):
             fill="cyan", text="O", font=("Purisa", 150))
 
     def click(self, event):
+        if self.game.is_over(): return
         x = event.x
         y = event.y
 
@@ -88,16 +89,10 @@ class TicTacToeGui(tk.Frame):
         if self.game.is_over():
             self.show_winner()
 
-
-if __name__ == "__main__":
+def display(game):
     root = tk.Tk()
     root.title("Tic-Tac-Toe")
-    
-    tictactoe = tic_tac_toe.TicTacToeGame()
-
-    gui = TicTacToeGui(root, tictactoe)
+    gui = TicTacToeGui(root, game)
     gui.pack(side= "top", fill= "both", expand="True")
     root.resizable(0,0)
     root.mainloop()
-
-

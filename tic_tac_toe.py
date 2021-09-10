@@ -69,27 +69,3 @@ class TicTacToeGame():
         for line in self.board: print(line)
         return f"Next turn: Player {self.turn}"
 
-
-if __name__ == "__main__":
-    game = TicTacToeGame()
-    
-    game.make_mark(0,1)
-    game.make_mark(0,0)
-    game.make_mark(1,2)
-    game.make_mark(1,1)
-    game.make_mark(0,2)
-    game.make_mark(2,2)
-
-    print("over", game.is_over())
-    print(game.full_board())
-    print("winer", game.winner())
-    print(game.complete_line())
-    print(game)
-
-
-
-
-
-
-
-
