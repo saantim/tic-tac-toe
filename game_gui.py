@@ -81,7 +81,7 @@ class TicTacToeGui(tk.Frame):
         if not self.game.get_winner():
             self.label_text.set(value=f"It's a Draw!")    
         else:
-            self.label_text.set(value=f"Player {self.game.get_turn()} wins!!!")
+            self.label_text.set(value=f"Player {self.game.get_winner()} wins!!!")
 
     def draw_refresh(self):
         self.draw_board()
