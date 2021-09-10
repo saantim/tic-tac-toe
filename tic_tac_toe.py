@@ -45,15 +45,16 @@ class TicTacToeGame():
     def is_over(self):
         return self.full_board() or self.winner()
 
+    def next_turn(self):
+        if self.turn == 1: self.turn = 2
+        else: self.turn = 1
+        
     def make_mark(self, x, y):
         if x < 0 or x > 2: return False
         if y < 0 or y > 2: return False
         if self.board[y][x]: return False
         self.board[y][x] = self.turn
-        if self.turn == 1: 
-            self.turn = 2
-        else: 
-            self.turn = 1
+        self.next_turn()
         return True
     
     def __str__(self):

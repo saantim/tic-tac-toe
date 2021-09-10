@@ -1,5 +1,5 @@
 import tkinter as tk
-import game
+import tic_tac_toe
 
 
 class TicTacToeGui(tk.Frame):
@@ -15,6 +15,8 @@ class TicTacToeGui(tk.Frame):
         self.canvas.pack()
         turn = tk.Label(text=f"Now is Player {self.game.get_turn()}'s turn!")
         turn.pack()
+        self.canvas.bind("<Button-1>", self.click)
+        self.draw_cells()
 
     def draw_cells(self):
         board = self.game.get_board()
@@ -46,47 +48,36 @@ class TicTacToeGui(tk.Frame):
             130 + (y_board * self.cell_size),
             fill="cyan", text="O", font=("Purisa", 150))
 
-    def map_click(self):
-        pass
+    def click(self, event):
+        x = event.x
+        y = event.y
+        print(event.x, event.y)
 
+        x0 = y0 = 50
+        x1 = y1 = 200
+        board = self.game.get_board()
+        for y_board in range(len(board)):
+            for x_board in range(len(board[0])):
+                cell_x0 = x0 + (x_board * self.cell_size)
+                cell_x1 = x1 + (x_board * self.cell_size)
+                cell_y0 = y0 + (y_board * self.cell_size)
+                cell_y1 = y1 + (y_board * self.cell_size)
+                if x > cell_x0 and x < cell_x1 and y > cell_y0 and y < cell_y1:
+                    self.game.make_mark(x_board, y_board)
+        self.draw_refresh()
 
-def design_table(game):
-    frame_1 = tk.Frame()
-    current_turn = tk.Label(text=f"Now is Player {game[1]}'s turn!")
-    current_turn.config(bg= "pink")
-    
-    current_turn.pack()
-    frame_1.config(width=550, height=550)
-    frame_1.pack()
-
-    return frame_1
-
-def show_cells(game):
-
-    pass
-
-def detectar_mouse(root):
-    canvas = tk.Canvas(root, width = 100, height= 100)
-    canvas.bind("<Button-1>", callback)
-    canvas.pack()
-
-def callback(event):
-    print(f"clicked at {event.x}, {event.y}")
-    mensaje = f"clicked at {event.x}, {event.y}"
+    def draw_refresh(self):
+        self.draw_cells()
+        #self.show_winner()
 
 if __name__ == "__main__":
     root = tk.Tk()
     root.title("Tic-Tac-Toe")
     
-    tictactoe = game.TicTacToeGame()
+    tictactoe = tic_tac_toe.TicTacToeGame()
 
     gui = TicTacToeGui(root, tictactoe)
     gui.pack(side= "top", fill= "both", expand="True")
-
-    tictactoe.make_mark(1,1)
-    tictactoe.make_mark(1,1)
-    tictactoe.make_mark(1,2)
-    gui.draw_cells()
 
     #root.resizable(0,0)
     root.mainloop()
